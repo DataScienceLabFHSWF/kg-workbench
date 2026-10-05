@@ -1,0 +1,11 @@
+title = "KG Workbench Gitleaks configuration"
+
+[extend]
+useDefault = true
+
+[[allowlists]]
+description = "Documented non-secret placeholder for generated self-hosting keys"
+condition = "AND"
+targetRules = ["generic-api-key"]
+paths = ['''^deploy/\.env\.server\.example$''']
+regexes = ['''^replace-me-with-at-least-32-characters$''']

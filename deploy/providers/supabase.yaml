@@ -1,0 +1,62 @@
+﻿services:
+  app:
+    depends_on:
+      db:
+        condition: service_healthy
+      storage:
+        condition: service_healthy
+      extraction:
+        condition: service_started
+    environment:
+      DATABASE_URL: postgresql://postgres:${POSTGRES_PASSWORD}@db:5432/postgres
+      STORAGE_PROVIDER: supabase
+      SUPABASE_URL: http://kong:8000
+      SUPABASE_SERVICE_ROLE_KEY: ${SERVICE_ROLE_KEY}
+
+  db:
+    extends:
+      file: ./supabase/docker-compose.supabase.yml
+      service: db
+    ports:
+      - 127.0.0.1:${POSTGRES_PORT:-5433}:5432
+
+  rest:
+    extends:
+      file: ./supabase/docker-compose.supabase.yml
+      service: rest
+
+  auth:
+    extends:
+      file: ./supabase/docker-compose.supabase.yml
+      service: auth
+
+  storage:
+    extends:
+      file: ./supabase/docker-compose.supabase.yml
+      service: storage
+
+  kong:
+    extends:
+      file: ./supabase/docker-compose.supabase.yml
+      service: kong
+    ports:
+      - 127.0.0.1:${SUPABASE_API_PORT:-8503}:8000
+
+  meta:
+    extends:
+      file: ./supabase/docker-compose.supabase.yml
+      service: meta
+    profiles: ["admin"]
+
+  studio:
+    extends:
+      file: ./supabase/docker-compose.supabase.yml
+      service: studio
+    profiles: ["admin"]
+    ports:
+      - 127.0.0.1:${SUPABASE_STUDIO_PORT:-55432}:3000
+
+volumes:
+  supabase_db_data:
+  supabase_storage_data:
+

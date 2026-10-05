@@ -1,0 +1,31 @@
+[project]
+name = "kg-workbench-internal-extractor"
+version = "0.1.0"
+description = "Internal fallback extractor for KG Workbench"
+license = "MIT"
+requires-python = ">=3.11,<3.14"
+dependencies = [
+  "fastapi>=0.115.0",
+  "neo4j-graphrag[anthropic,experimental,ollama,openai]>=1.10.0",
+  "pydantic>=2.8.0",
+  "pypdf>=5.0.0",
+  "uvicorn[standard]>=0.32.0",
+]
+
+[dependency-groups]
+dev = [
+  "httpx>=0.27.0",
+  "pytest>=8.0.0",
+  "pytest-asyncio>=0.24.0",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/internal_extractor"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]

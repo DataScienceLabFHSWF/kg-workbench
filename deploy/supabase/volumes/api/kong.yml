@@ -1,0 +1,31 @@
+# Adapted for KG Workbench from the Supabase self-hosting distribution.
+# Copyright 2024 Supabase. Apache-2.0; see LICENSES/Supabase-Apache-2.0.txt at the repository root.
+_format_version: "3.0"
+
+services:
+  - name: rest
+    url: http://rest:3000
+    routes:
+      - name: rest
+        paths:
+          - /rest/v1
+        strip_path: true
+        preserve_host: false
+
+  - name: auth
+    url: http://auth:9999
+    routes:
+      - name: auth
+        paths:
+          - /auth/v1
+        strip_path: true
+        preserve_host: false
+
+  - name: storage
+    url: http://storage:5000
+    routes:
+      - name: storage
+        paths:
+          - /storage/v1
+        strip_path: true
+        preserve_host: false
